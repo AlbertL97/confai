@@ -1,10 +1,8 @@
 import Link from "next/link";
 
 const navItems = [
-  { href: "/conferences", label: "Conferences" },
-  { href: "/deadlines", label: "Deadlines" },
-  { href: "/sources", label: "Sources" },
-  { href: "/methodology", label: "Methodology" },
+  { href: "/", label: "About" },
+  { href: "/conferences", label: "Records" },
 ];
 
 export function SiteHeader() {

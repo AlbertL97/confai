@@ -39,6 +39,7 @@ jobs:
         if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         env:
           REFRESH_MODE: dry-run
+          REFRESH_BATCH_SIZE: 10
         run: npm run refresh:dry-run
 
       - name: Upload run summary

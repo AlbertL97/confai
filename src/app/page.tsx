@@ -1,116 +1,76 @@
-import { ArrowRight, CalendarClock, Database, ShieldCheck } from "lucide-react";
+import { ArrowRight, CalendarDays, Database, Search, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { ConferenceCard } from "@/components/conference-card";
 import { SiteHeader } from "@/components/site-header";
-import {
-  getDeadlineItems,
-  getPublishedConferences,
-  getUpcomingOrRecentConferences,
-  sourceRegistry,
-} from "@/lib/data";
+import { conferences, getUpcomingOrRecentConferences } from "@/lib/data";
 
 export default function Home() {
-  const conferences = getUpcomingOrRecentConferences();
-  const featured = getPublishedConferences()[0];
-  const deadlines = getDeadlineItems().slice(0, 3);
+  const visibleRecords = getUpcomingOrRecentConferences();
+  const countries = new Set(visibleRecords.map((conference) => conference.country)).size;
+  const taggedRecords = visibleRecords.filter(
+    (conference) => conference.field_tags.length || conference.theme_tags.length,
+  ).length;
 
   return (
     <div className="min-h-screen bg-zinc-50">
       <SiteHeader />
       <main>
         <section className="border-b border-zinc-200 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-            <div className="space-y-7">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+            <div className="space-y-6">
               <div className="space-y-4">
                 <p className="font-mono text-sm uppercase tracking-normal text-blue-700">
-                  Source-grounded conference tracking
+                  European research conference directory
                 </p>
                 <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-zinc-950 sm:text-5xl">
-                  ConfAI tracks European AI, psychology, cognitive science, and
-                  HCI venues with visible provenance.
+                  ConfAI helps researchers find relevant AI, cognitive science,
+                  psychology, and HCI conferences.
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-zinc-600">
-                  Search deadlines, fees, locations, modes, topics, and review
-                  status. Polish-language sources are included only for Poland
-                  and every published fact must point back to an official source.
+                  The directory brings conference dates, submission deadlines,
+                  fees, location, mode, tags, and official links into one
+                  searchable table. It covers future European events and a short
+                  recent archive so active opportunities stay easy to compare.
                 </p>
               </div>
-              <form
-                action="/conferences"
-                className="flex max-w-2xl flex-col gap-3 rounded-md border border-zinc-200 bg-zinc-50 p-3 sm:flex-row"
-              >
-                <label className="sr-only" htmlFor="home-search">
-                  Search conferences
-                </label>
-                <input
-                  id="home-search"
-                  name="q"
-                  placeholder="Search cognitive science, AI ethics, HCI..."
-                  className="min-h-11 flex-1 rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                />
-                <button className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 text-sm font-medium text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  Search
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/conferences"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 text-sm font-medium text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Browse records
                   <ArrowRight className="size-4" aria-hidden="true" />
-                </button>
-              </form>
+                </Link>
+                <Link
+                  href="/conferences?sort=closest_deadline"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-800 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Sort by deadline
+                  <CalendarDays className="size-4" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
+
             <div className="grid content-start gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              <Metric
-                icon={Database}
-                label="Reviewed records"
-                value={String(conferences.length)}
-              />
-              <Metric
-                icon={ShieldCheck}
-                label="Source targets"
-                value={String(sourceRegistry.length)}
-              />
-              <Metric
-                icon={CalendarClock}
-                label="Next deadlines"
-                value={String(deadlines.length)}
-              />
+              <Metric icon={Database} label="Seed records" value={String(conferences.length)} />
+              <Metric icon={Search} label="Visible records" value={String(visibleRecords.length)} />
+              <Metric icon={ShieldCheck} label="Countries" value={String(countries)} />
             </div>
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_360px] lg:px-8">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-semibold text-zinc-950">
-                Featured verified record
-              </h2>
-              <Link
-                href="/conferences"
-                className="text-sm font-medium text-blue-700 hover:text-blue-900"
-              >
-                Browse all
-              </Link>
-            </div>
-            {featured ? <ConferenceCard conference={featured} /> : null}
-          </div>
-          <aside className="space-y-4">
-            <h2 className="text-2xl font-semibold text-zinc-950">Deadline feed</h2>
-            <div className="rounded-md border border-zinc-200 bg-white">
-              {deadlines.map((deadline) => (
-                <Link
-                  key={`${deadline.conference.id}-${deadline.label}`}
-                  href={`/conferences/${deadline.conference.slug}`}
-                  className="block border-b border-zinc-100 p-4 last:border-b-0 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <p className="text-sm font-medium text-zinc-950">
-                    {deadline.label}
-                  </p>
-                  <p className="mt-1 font-mono text-sm text-zinc-600">
-                    {deadline.date}
-                  </p>
-                  <p className="mt-2 text-sm text-zinc-600">
-                    {deadline.conference.acronym} {deadline.conference.year}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </aside>
+        <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:px-8">
+          <InfoPanel
+            title="Built for comparison"
+            body="Records are shown as a dense table with deadline, event date, fee, mode, source, and tag columns so researchers can scan opportunities quickly."
+          />
+          <InfoPanel
+            title="Searchable by topic"
+            body={`Tag metadata is available for ${taggedRecords} visible records, covering AI, HCI, cognitive science, psychology, neuroscience, NLP, computer vision, and related areas.`}
+          />
+          <InfoPanel
+            title="Source-first"
+            body="Each record includes an official website or organizer link. When details are incomplete or lower-confidence, the table labels that status directly."
+          />
         </section>
       </main>
     </div>
@@ -132,5 +92,14 @@ function Metric({
       <p className="mt-4 text-3xl font-semibold text-zinc-950">{value}</p>
       <p className="mt-1 text-sm text-zinc-600">{label}</p>
     </div>
+  );
+}
+
+function InfoPanel({ title, body }: { title: string; body: string }) {
+  return (
+    <section className="rounded-md border border-zinc-200 bg-white p-5">
+      <h2 className="text-lg font-semibold text-zinc-950">{title}</h2>
+      <p className="mt-3 text-sm leading-6 text-zinc-600">{body}</p>
+    </section>
   );
 }

@@ -57,6 +57,48 @@ export const conferenceSchema = z.object({
   source_notes: z.string(),
 });
 
+export const compactConferenceSeedSchema = z.object({
+  id: z.string().min(1),
+  slug: z.string().min(1).optional(),
+  title: z.string().min(1),
+  acronym: z.string().nullable().optional(),
+  year: z.number().int().min(2000).max(2100),
+  description: z.string().optional(),
+  field_tags: z.array(z.string()).optional(),
+  theme_tags: z.array(z.string()).optional(),
+  organizer: z.string().nullable().optional(),
+  website_url: z.string().url(),
+  cfp_url: z.string().url().nullable().optional(),
+  source_urls: z.array(z.string().url()).optional(),
+  country: z.string(),
+  city: z.string(),
+  venue: z.string().nullable().optional(),
+  mode: modeSchema.optional(),
+  event_start_date: z.string().nullable().optional(),
+  event_end_date: z.string().nullable().optional(),
+  submission_deadline: z.string().nullable().optional(),
+  abstract_deadline: z.string().nullable().optional(),
+  poster_deadline: z.string().nullable().optional(),
+  notification_date: z.string().nullable().optional(),
+  camera_ready_deadline: z.string().nullable().optional(),
+  registration_deadline: z.string().nullable().optional(),
+  early_bird_deadline: z.string().nullable().optional(),
+  fees: z.array(feeSchema).optional(),
+  currency: z.string().nullable().optional(),
+  student_fee: z.number().nullable().optional(),
+  regular_fee: z.number().nullable().optional(),
+  virtual_fee: z.number().nullable().optional(),
+  keywords: z.array(z.string()).optional(),
+  language: z.string().optional(),
+  source_confidence: confidenceSchema.optional(),
+  review_status: reviewStatusSchema.optional(),
+  last_checked_at: z.string().datetime().optional(),
+  last_changed_at: z.string().datetime().optional(),
+  created_at: z.string().datetime().optional(),
+  updated_at: z.string().datetime().optional(),
+  source_notes: z.string().optional(),
+});
+
 export const sourceRegistryEntrySchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -70,4 +112,5 @@ export const sourceRegistryEntrySchema = z.object({
 });
 
 export type Conference = z.infer<typeof conferenceSchema>;
+export type CompactConferenceSeed = z.infer<typeof compactConferenceSeedSchema>;
 export type SourceRegistryEntry = z.infer<typeof sourceRegistryEntrySchema>;

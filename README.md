@@ -8,10 +8,11 @@ The project is built for a public GitHub repository and Vercel deployment. It us
 
 - Next.js App Router, TypeScript, Tailwind CSS, and shadcn-compatible component patterns.
 - Prisma schema for Neon Postgres.
+- Seed data with at least 40 conference records across AI, ML, HCI, cognitive science, psychology, cognitive neuroscience, and adjacent fields.
 - Candidate source registry for major AI, ML, HCI, cognitive science, and neuroscience conference families.
-- Public pages for search, detail records, deadlines, source registry, and methodology.
+- Two public pages: an app description page and a records table with deadlines, source links, tags, confidence, dates, fees, and locations as columns.
 - JSON API endpoints for conferences and deadlines.
-- GitHub Actions CI and a dry-run daily refresh workflow.
+- GitHub Actions CI and a dry-run daily refresh workflow that processes records in batches of 10 by default.
 
 ## Architecture
 
@@ -75,6 +76,8 @@ Required Vercel environment variables:
 
 - `DATABASE_URL`
 - `REFRESH_MODE`
+- `REFRESH_BATCH_SIZE`
+- `REFRESH_BATCH_OFFSET`
 - `CONFIDENCE_THRESHOLD`
 
 Automatic GitHub-to-Vercel deployment is intended, but repository creation, push, Vercel connection, and production deployment must be performed and verified explicitly.
@@ -85,8 +88,7 @@ Current deployment status: production deployment is live and returns HTTP 200.
 
 Add screenshots or short GIFs after the first local or preview deployment is running. Suggested captures:
 
-- homepage dashboard;
-- conference list with filters;
-- LSK detail page with provenance;
-- deadline timeline;
-- source registry.
+- app description page;
+- records table with filters and sorting;
+- tag search for a specific topic;
+- closest-deadline sort state.

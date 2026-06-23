@@ -53,17 +53,15 @@ Missing information should remain explicitly missing. Codex must not invent unkn
 The MVP should include:
 
 1. A public homepage explaining the repository.
-2. A searchable conference list.
-3. Filters for field, country, date, deadline, fee availability, event mode, and topic.
-4. Sort options by submission deadline, conference date, name, and last updated date.
-5. Individual conference detail pages.
-6. A deadline calendar or timeline view.
-7. Source/provenance information for each conference.
-8. Clear labels for uncertain, incomplete, or manually reviewed data.
-9. Responsive UI for desktop and mobile.
-10. Basic SEO metadata.
-11. Deployment to Vercel.
-12. GitHub repository with clean commit history and setup instructions.
+2. A searchable conference records table.
+3. Filters for field, country, deadline, fee availability, event mode, and topic tags.
+4. Sort options by shortest deadline, closest conference date, name, and last updated date.
+5. Deadline, source/provenance, fee, tag, mode, and confidence columns in the records table.
+6. Clear labels for uncertain, incomplete, or manually reviewed data.
+7. Responsive UI for desktop and mobile.
+8. Basic SEO metadata.
+9. Deployment to Vercel.
+10. GitHub repository with clean commit history and setup instructions.
 
 ## Recommended post-MVP features
 
@@ -80,6 +78,8 @@ Codex should propose these after the MVP is stable, not implement them without c
 - analytics dashboard;
 - automated GitHub issue creation when scraping fails;
 - editorial moderation workflow.
+- individual conference detail pages, only if table density becomes insufficient;
+- iCal or timeline view for deadlines, only if confirmed after the two-page MVP is stable.
 
 ## Automation requirement
 
@@ -175,6 +175,7 @@ Before implementation, Codex must ask the user:
 - [x] Implement validation schemas.
 - [x] Implement public API routes.
 - [x] Add seed data for development.
+- [x] Expand seed data to at least 40 conference records.
 - [ ] Add production database migrations after Neon is connected.
 
 ### Milestone 3: Source registry and scraping pipeline
@@ -189,8 +190,9 @@ Before implementation, Codex must ask the user:
 
 - [x] Implement homepage.
 - [x] Implement conference list with search and filters.
-- [x] Implement conference detail pages.
-- [x] Implement deadline timeline.
+- [x] Implement records table with deadline and source columns.
+- [x] Implement tag search and shortest-deadline/closest-date sorting.
+- [x] Remove separate public deadline, source, methodology, and detail pages.
 - [x] Add empty states.
 - [ ] Run browser accessibility check.
 
@@ -198,6 +200,7 @@ Before implementation, Codex must ask the user:
 
 - [x] Implement daily refresh workflow skeleton.
 - [x] Confirm schedule and timezone behavior.
+- [x] Configure refresh batch size to 10 records per run by default.
 - [ ] Add real fetch retries, logs, and database audit trail.
 - [x] Add dry-run mode.
 - [ ] Validate idempotent database writes after Neon setup.
@@ -225,7 +228,7 @@ The project is complete when:
 - the website is public on Vercel;
 - the code is available in the specified GitHub repository;
 - conference records are stored in a structured backend;
-- public pages support search, filters, sorting, and detail views;
+- public pages support search, filters, sorting, and source-visible records;
 - every conference record has source provenance;
 - the daily automated task is configured and verified;
 - failed or uncertain scraping results are handled safely;
