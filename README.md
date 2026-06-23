@@ -8,7 +8,6 @@ The project is built for a public GitHub repository and Vercel deployment. It us
 
 - Next.js App Router, TypeScript, Tailwind CSS, and shadcn-compatible component patterns.
 - Prisma schema for Neon Postgres.
-- Reviewed seed record for [Letnia Szkola Kognitywistyki](https://lsk.kul.pl/), a Polish-language Poland-only source.
 - Candidate source registry for major AI, ML, HCI, cognitive science, and neuroscience conference families.
 - Public pages for search, detail records, deadlines, source registry, and methodology.
 - JSON API endpoints for conferences and deadlines.
