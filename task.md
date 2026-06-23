@@ -204,11 +204,10 @@ Before implementation, Codex must ask the user:
 
 ### Milestone 6: Deployment
 
-- Configure environment variables.
-- Connect GitHub repository to Vercel.
-- Deploy preview environment.
-- Run smoke tests.
-- Deploy production environment after user confirmation.
+- [ ] Configure Neon `DATABASE_URL` environment variables.
+- [x] Connect GitHub repository to Vercel.
+- [x] Deploy production environment after user confirmation.
+- [x] Run HTTP smoke test against production URL.
 
 ### Milestone 7: QA and launch review
 

@@ -70,6 +70,8 @@ Target repository: `AlbertL97/confai`.
 
 Target hosting: Vercel account/team `albertl97s-projects`.
 
+Live production URL: [https://confai-henna.vercel.app](https://confai-henna.vercel.app)
+
 Required Vercel environment variables:
 
 - `DATABASE_URL`
@@ -77,6 +79,8 @@ Required Vercel environment variables:
 - `CONFIDENCE_THRESHOLD`
 
 Automatic GitHub-to-Vercel deployment is intended, but repository creation, push, Vercel connection, and production deployment must be performed and verified explicitly.
+
+Current deployment status: production deployment is live and returns HTTP 200.
 
 ## Screenshots and GIFs
 

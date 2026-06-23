@@ -9,6 +9,12 @@
 - Hosting: Vercel
 - Database: Neon Postgres
 
+## Verified URLs
+
+- GitHub: [https://github.com/AlbertL97/confai](https://github.com/AlbertL97/confai)
+- Vercel production: [https://confai-henna.vercel.app](https://confai-henna.vercel.app)
+- Vercel deployment ID: `dpl_FNDVETdKF9yBwg2tsS8vDZtcxWqQ`
+
 ## Environment Variables
 
 Set these in Vercel and GitHub Actions secrets:
@@ -31,10 +37,10 @@ Operational caveat: GitHub documents that scheduled workflows can be delayed or 
 
 Before production deployment:
 
-- CI passes.
-- `npm run build` passes.
-- `npm run db:validate` passes.
-- Neon `DATABASE_URL` is configured.
-- Vercel project is connected to `AlbertL97/confai`.
-- Daily refresh remains dry-run or has verified idempotent writes.
-- No public admin route is exposed without authentication.
+- [x] CI-equivalent local checks pass.
+- [x] `npm run build` passes locally and on Vercel.
+- [x] `npm run db:validate` passes.
+- [ ] Neon `DATABASE_URL` is configured.
+- [x] Vercel project is connected to `AlbertL97/confai`.
+- [x] Daily refresh remains dry-run until idempotent writes are implemented.
+- [x] No public admin route is exposed.
