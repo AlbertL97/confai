@@ -1,0 +1,112 @@
+[
+  {
+    "id": "lsk-kul",
+    "name": "Letnia Szkola Kognitywistyki",
+    "homepage_url": "https://lsk.kul.pl/",
+    "scope": "Polish-language Poland source for cognitive science summer school records.",
+    "status": "approved_seed",
+    "language_policy": "Polish-language sources are allowed only for Poland.",
+    "risk_notes": "WordPress structure is extractable, but registration link points to a short URL and must not be followed blindly for scraping.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "venue", "city", "deadlines", "fees", "themes", "organizers"]
+  },
+  {
+    "id": "ijcai-ecai",
+    "name": "IJCAI-ECAI / EurAI ECAI",
+    "homepage_url": "https://www.eurai.org/",
+    "scope": "Flagship AI conference family; include Europe-hosted editions only.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages only unless edition-specific local pages are approved.",
+    "risk_notes": "Joint branding can create duplicate IJCAI/ECAI records.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "location", "cfp", "tracks", "workshops", "doctoral_consortium"]
+  },
+  {
+    "id": "ecml-pkdd",
+    "name": "ECML PKDD",
+    "homepage_url": "https://ecmlpkdd.org/",
+    "scope": "European machine learning and data mining conference.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Historical year pages may move across domains.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "location", "tracks", "workshops", "cfp", "registration"]
+  },
+  {
+    "id": "acm-chi",
+    "name": "ACM CHI Europe editions",
+    "homepage_url": "https://chi2026.acm.org/",
+    "scope": "HCI flagship; include Europe-hosted or European-institution online editions only.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Global rotating event; non-European editions must be excluded.",
+    "parser_difficulty": "high",
+    "likely_fields": ["dates", "venue", "deadlines", "tracks", "registration", "accessibility"]
+  },
+  {
+    "id": "aies",
+    "name": "AIES",
+    "homepage_url": "https://www.aies-conference.com/",
+    "scope": "AI ethics and society conference; include Europe-hosted editions only.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Main call and student calls may live on separate pages.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "location", "cfp", "registration", "committees", "proceedings"]
+  },
+  {
+    "id": "fens",
+    "name": "FENS Forum and FENS meetings",
+    "homepage_url": "https://www.fens.org/",
+    "scope": "European neuroscience and cognitive neuroscience adjacency.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Source availability should be retried politely; include only relevant neuroscience/cognition events.",
+    "parser_difficulty": "high",
+    "likely_fields": ["dates", "location", "meeting_type", "abstract_deadline", "registration"]
+  },
+  {
+    "id": "ecnp",
+    "name": "ECNP Congress",
+    "homepage_url": "https://www.ecnp.eu/congress2026/",
+    "scope": "European brain research and neuropsychopharmacology conference family.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Clinical scope can be too broad; cognition/neurotechnology relevance should be tagged explicitly.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "location", "abstract_deadline", "registration", "fees"]
+  },
+  {
+    "id": "escop",
+    "name": "ESCoP meetings",
+    "homepage_url": "https://escop.eu/",
+    "scope": "European cognitive psychology society meetings.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Biennial or irregular edition pages need stale-page detection.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "host_city", "organizers", "abstract_deadline", "fees", "topics"]
+  },
+  {
+    "id": "eacl-acl",
+    "name": "EACL / ACL Europe-hosted editions",
+    "homepage_url": "https://www.eacl.org/",
+    "scope": "Computational linguistics and NLP; include EACL and Europe-hosted ACL editions.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "ACL main conference rotates globally; Europe filter is mandatory.",
+    "parser_difficulty": "medium",
+    "likely_fields": ["dates", "venue", "cfp", "workshops", "tutorials", "proceedings"]
+  },
+  {
+    "id": "sigchi-specialists",
+    "name": "SIGCHI specialist conferences",
+    "homepage_url": "https://www.sigchi.org/conferences/upcoming-conferences",
+    "scope": "UMAP, RecSys, IUI, HRI, ICMI and related HCI/AI interaction venues, with Europe filter.",
+    "status": "candidate_needs_review",
+    "language_policy": "English official pages.",
+    "risk_notes": "Too broad without a per-venue allowlist; each annual site needs separate approval.",
+    "parser_difficulty": "high",
+    "likely_fields": ["dates", "venue", "cfp", "tracks", "registration", "proceedings"]
+  }
+]

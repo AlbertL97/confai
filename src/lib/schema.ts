@@ -1,0 +1,73 @@
+import { z } from "zod";
+
+export const modeSchema = z.enum(["in_person", "hybrid", "online", "unknown"]);
+export const confidenceSchema = z.enum(["low", "medium", "high"]);
+export const reviewStatusSchema = z.enum([
+  "candidate",
+  "needs_review",
+  "reviewed",
+  "rejected",
+]);
+
+export const feeSchema = z.object({
+  label: z.string().min(1),
+  amount: z.number().nonnegative().nullable(),
+  currency: z.string().min(3).max(3),
+});
+
+export const conferenceSchema = z.object({
+  id: z.string().min(1),
+  slug: z.string().min(1),
+  title: z.string().min(1),
+  acronym: z.string().nullable(),
+  year: z.number().int().min(2000).max(2100),
+  description: z.string(),
+  field_tags: z.array(z.string()),
+  theme_tags: z.array(z.string()),
+  organizer: z.string().nullable(),
+  website_url: z.string().url(),
+  cfp_url: z.string().url().nullable(),
+  source_urls: z.array(z.string().url()).min(1),
+  country: z.string(),
+  city: z.string(),
+  venue: z.string().nullable(),
+  mode: modeSchema,
+  event_start_date: z.string().nullable(),
+  event_end_date: z.string().nullable(),
+  submission_deadline: z.string().nullable(),
+  abstract_deadline: z.string().nullable(),
+  poster_deadline: z.string().nullable(),
+  notification_date: z.string().nullable(),
+  camera_ready_deadline: z.string().nullable(),
+  registration_deadline: z.string().nullable(),
+  early_bird_deadline: z.string().nullable(),
+  fees: z.array(feeSchema),
+  currency: z.string().nullable(),
+  student_fee: z.number().nullable(),
+  regular_fee: z.number().nullable(),
+  virtual_fee: z.number().nullable(),
+  keywords: z.array(z.string()),
+  language: z.string(),
+  source_confidence: confidenceSchema,
+  review_status: reviewStatusSchema,
+  last_checked_at: z.string().datetime(),
+  last_changed_at: z.string().datetime(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+  source_notes: z.string(),
+});
+
+export const sourceRegistryEntrySchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  homepage_url: z.string().url(),
+  scope: z.string(),
+  status: z.enum(["approved_seed", "candidate_needs_review", "excluded"]),
+  language_policy: z.string(),
+  risk_notes: z.string(),
+  parser_difficulty: z.enum(["low", "medium", "high"]),
+  likely_fields: z.array(z.string()),
+});
+
+export type Conference = z.infer<typeof conferenceSchema>;
+export type SourceRegistryEntry = z.infer<typeof sourceRegistryEntrySchema>;

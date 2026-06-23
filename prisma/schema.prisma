@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ConferenceMode {
+  in_person
+  hybrid
+  online
+  unknown
+}
+
+enum SourceConfidence {
+  low
+  medium
+  high
+}
+
+enum ReviewStatus {
+  candidate
+  needs_review
+  reviewed
+  rejected
+}
+
+enum SourceStatus {
+  approved_seed
+  candidate_needs_review
+  excluded
+}
+
+model Conference {
+  id                     String           @id @default(cuid())
+  slug                   String           @unique
+  title                  String
+  acronym                String?
+  year                   Int
+  description            String?
+  fieldTags              String[]         @default([])
+  themeTags              String[]         @default([])
+  organizer              String?
+  websiteUrl             String
+  cfpUrl                 String?
+  country                String
+  city                   String
+  venue                  String?
+  mode                   ConferenceMode   @default(unknown)
+  eventStartDate         DateTime?
+  eventEndDate           DateTime?
+  submissionDeadline     DateTime?
+  abstractDeadline       DateTime?
+  posterDeadline         DateTime?
+  notificationDate       DateTime?
+  cameraReadyDeadline    DateTime?
+  registrationDeadline   DateTime?
+  earlyBirdDeadline      DateTime?
+  currency               String?
+  studentFee             Decimal?
+  regularFee             Decimal?
+  virtualFee             Decimal?
+  keywords               String[]         @default([])
+  language               String           @default("en")
+  sourceConfidence       SourceConfidence @default(low)
+  reviewStatus           ReviewStatus     @default(needs_review)
+  lastCheckedAt          DateTime
+  lastChangedAt          DateTime?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  sources                ConferenceSource[]
+  fees                   ConferenceFee[]
+  reviewItems            ReviewItem[]
+  auditLogs              AuditLog[]
+
+  @@index([country, city])
+  @@index([eventStartDate])
+  @@index([submissionDeadline])
+  @@index([reviewStatus])
+}
+
+model ConferenceSource {
+  id            String           @id @default(cuid())
+  conferenceId  String
+  conference    Conference       @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+  url           String
+  label         String?
+  confidence    SourceConfidence @default(low)
+  lastCheckedAt DateTime
+  parserVersion String?
+  createdAt     DateTime         @default(now())
+
+  @@index([url])
+}
+
+model ConferenceFee {
+  id           String     @id @default(cuid())
+  conferenceId String
+  conference   Conference @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+  label        String
+  amount       Decimal?
+  currency     String
+  createdAt    DateTime   @default(now())
+}
+
+model SourceRegistryEntry {
+  id               String       @id
+  name             String
+  homepageUrl      String
+  scope            String
+  status           SourceStatus @default(candidate_needs_review)
+  languagePolicy   String
+  riskNotes        String
+  parserDifficulty String
+  likelyFields     String[]     @default([])
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model IngestionRun {
+  id               String         @id @default(cuid())
+  mode             String
+  status           String
+  startedAt        DateTime       @default(now())
+  finishedAt       DateTime?
+  sourcesChecked   Int            @default(0)
+  pagesFetched     Int            @default(0)
+  recordsCreated   Int            @default(0)
+  recordsUpdated   Int            @default(0)
+  recordsUnchanged Int            @default(0)
+  recordsToReview  Int            @default(0)
+  warnings         Json?
+  logs             IngestionLog[]
+}
+
+model IngestionLog {
+  id             String       @id @default(cuid())
+  ingestionRunId String
+  ingestionRun   IngestionRun @relation(fields: [ingestionRunId], references: [id], onDelete: Cascade)
+  sourceId       String?
+  level          String
+  message        String
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+}
+
+model ReviewItem {
+  id           String      @id @default(cuid())
+  conferenceId String?
+  conference   Conference? @relation(fields: [conferenceId], references: [id], onDelete: SetNull)
+  sourceUrl    String
+  reason       String
+  payload      Json
+  status       String      @default("open")
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model AuditLog {
+  id           String      @id @default(cuid())
+  conferenceId String?
+  conference   Conference? @relation(fields: [conferenceId], references: [id], onDelete: SetNull)
+  action       String
+  actor        String      @default("system")
+  before       Json?
+  after        Json?
+  createdAt    DateTime    @default(now())
+}
