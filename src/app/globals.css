@@ -71,3 +71,7 @@ body {
   background-color: #ffffff;
   color: #111827;
 }
+
+[data-theme="dark"] tr.hover\:bg-zinc-50:hover {
+  background-color: transparent;
+}
