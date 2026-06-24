@@ -10,9 +10,9 @@ The project is built for a public GitHub repository and Vercel deployment. It us
 - Prisma schema for Neon Postgres.
 - Seed data with at least 40 conference records across AI, ML, HCI, cognitive science, psychology, cognitive neuroscience, and adjacent fields.
 - Candidate source registry for major AI, ML, HCI, cognitive science, and neuroscience conference families.
-- Two public pages: an app description page and a records table with deadlines, source links, tags, confidence, dates, fees, and locations as columns.
+- Two public pages: an app description page and a records table with deadlines, source links, tags, dates, fees, participation type, and locations as columns.
 - JSON API endpoints for conferences and deadlines.
-- GitHub Actions CI and a dry-run daily refresh workflow that processes records in batches of 10 by default.
+- GitHub Actions CI and a daily conference search workflow that checks 10 official source URLs per run before validating a 10-record refresh batch.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ flowchart TD
   H --> I["Next.js App Router"]
   I --> J["Public website on Vercel"]
   I --> K["JSON API"]
-  L["GitHub Actions daily refresh"] --> C
+  L["GitHub Actions daily search at 10:00 Europe/Warsaw"] --> C
   M["CI: typecheck, lint, tests, build"] --> I
 ```
 
@@ -53,6 +53,8 @@ For Neon, set `DATABASE_URL` in `.env`, GitHub Actions secrets, and Vercel envir
 - `npm run lint` runs ESLint.
 - `npm test` runs Vitest.
 - `npm run db:validate` validates `prisma/schema.prisma`.
+- `npm run search:dry-run` searches a 10-source batch and writes `artifacts/conference-search-summary.json`.
+- `npm run search:offline` validates the search plan without network access.
 - `npm run refresh:dry-run` validates seed/source data and writes `artifacts/last-refresh-summary.json`.
 
 ## Data Policy
@@ -78,6 +80,10 @@ Required Vercel environment variables:
 - `REFRESH_MODE`
 - `REFRESH_BATCH_SIZE`
 - `REFRESH_BATCH_OFFSET`
+- `SEARCH_MODE`
+- `SEARCH_BATCH_SIZE`
+- `SEARCH_BATCH_OFFSET`
+- `SEARCH_INCLUDE_CANDIDATES`
 - `CONFIDENCE_THRESHOLD`
 
 Automatic GitHub-to-Vercel deployment is intended, but repository creation, push, Vercel connection, and production deployment must be performed and verified explicitly.

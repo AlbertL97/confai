@@ -39,6 +39,16 @@ describe("conference seed data", () => {
     );
   });
 
+  it("treats unknown participation records as on-site in public filters", () => {
+    const results = filterConferences({
+      mode: "onsite",
+    });
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((record) => record.mode === "in_person" || record.mode === "unknown")).toBe(
+      true,
+    );
+  });
+
   it("sorts by closest event date when requested", () => {
     const results = filterConferences({ sort: "closest_event" });
     const firstDated = results.find((conference) => conference.event_start_date);

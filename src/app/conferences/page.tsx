@@ -1,13 +1,11 @@
 import { ArrowDownUp, Search } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ConfidenceBadge } from "@/components/status-badge";
 import { SiteHeader } from "@/components/site-header";
 import type { Conference } from "@/lib/schema";
 import {
   filterConferences,
   formatDate,
-  formatMode,
   formatTag,
   getCountryOptions,
   getFieldOptions,
@@ -70,26 +68,19 @@ export default async function ConferencesPage({
                 name="q"
                 defaultValue={selected.q}
                 placeholder="Topic, acronym, city..."
-                className="min-h-10 w-full rounded-md border border-zinc-300 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                className="min-h-10 w-full rounded-md border border-zinc-300 bg-white pl-9 pr-3 text-sm text-zinc-950 placeholder:text-zinc-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
               />
             </div>
           </label>
 
-          <label>
-            <span className="text-sm font-medium text-zinc-700">Tag search</span>
-            <input
-              name="tag"
-              defaultValue={selected.tag}
-              list="tag-options"
-              placeholder="knowledge graphs"
-              className="mt-1 min-h-10 w-full rounded-md border border-zinc-300 px-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
-            <datalist id="tag-options">
-              {getTagOptions().map((tag) => (
-                <option key={tag} value={formatTag(tag)} />
-              ))}
-            </datalist>
-          </label>
+          <Select name="tag" label="Tag" value={selected.tag}>
+            <option value="">Any tag</option>
+            {getTagOptions().map((tag) => (
+              <option key={tag} value={tag}>
+                {formatTag(tag)}
+              </option>
+            ))}
+          </Select>
 
           <Select name="field" label="Field" value={selected.field}>
             <option value="">Any field</option>
@@ -109,12 +100,11 @@ export default async function ConferencesPage({
             ))}
           </Select>
 
-          <Select name="mode" label="Mode" value={selected.mode}>
-            <option value="">Any mode</option>
-            <option value="in_person">In person</option>
+          <Select name="mode" label="Type of participation" value={selected.mode}>
+            <option value="">Any type</option>
+            <option value="onsite">On-site</option>
             <option value="hybrid">Hybrid</option>
             <option value="online">Online</option>
-            <option value="unknown">Unknown</option>
           </Select>
 
           <Select name="sort" label="Sort" value={selected.sort}>
@@ -158,13 +148,12 @@ export default async function ConferencesPage({
                     <HeaderCell>Conference</HeaderCell>
                     <HeaderCell>Tags</HeaderCell>
                     <HeaderCell>Location</HeaderCell>
-                    <HeaderCell>Mode</HeaderCell>
+                    <HeaderCell>Type of participation</HeaderCell>
                     <HeaderCell>Event date</HeaderCell>
                     <HeaderCell>Deadlines</HeaderCell>
                     <HeaderCell>Fees</HeaderCell>
                     <HeaderCell>Sources</HeaderCell>
                     <HeaderCell>Updated</HeaderCell>
-                    <HeaderCell>Confidence</HeaderCell>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100">
@@ -180,7 +169,7 @@ export default async function ConferencesPage({
                 No records match these filters
               </h2>
               <p className="mt-2 text-sm text-zinc-600">
-                Try a broader tag, country, mode, or sort option.
+                Try a broader tag, country, participation type, or sort option.
               </p>
             </div>
           )}
@@ -229,7 +218,7 @@ function ConferenceRow({ conference }: { conference: Conference }) {
         </p>
         {conference.venue ? <p className="mt-1 text-xs text-zinc-600">{conference.venue}</p> : null}
       </BodyCell>
-      <BodyCell className="capitalize">{formatMode(conference.mode)}</BodyCell>
+      <BodyCell>{formatParticipation(conference.mode)}</BodyCell>
       <BodyCell>{dateRange}</BodyCell>
       <BodyCell>
         <DeadlineLine label="Next" value={nearestDeadline} />
@@ -260,9 +249,6 @@ function ConferenceRow({ conference }: { conference: Conference }) {
         </div>
       </BodyCell>
       <BodyCell>{formatDate(conference.last_checked_at.slice(0, 10))}</BodyCell>
-      <BodyCell>
-        <ConfidenceBadge confidence={conference.source_confidence} />
-      </BodyCell>
     </tr>
   );
 }
@@ -308,7 +294,7 @@ function Select({
       <select
         name={name}
         defaultValue={value}
-        className="mt-1 min-h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm capitalize outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        className="mt-1 min-h-10 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm capitalize text-zinc-950 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
       >
         {children}
       </select>
@@ -321,6 +307,12 @@ function formatFees(conference: Conference) {
   return conference.fees
     .map((fee) => `${fee.label}: ${fee.amount ?? "TBA"} ${fee.currency}`)
     .join(", ");
+}
+
+function formatParticipation(mode: Conference["mode"]) {
+  if (mode === "hybrid") return "Hybrid";
+  if (mode === "online") return "Online";
+  return "On-site";
 }
 
 function readParam(value: string | string[] | undefined) {

@@ -27,9 +27,10 @@ export default function Home() {
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-zinc-600">
                   The directory brings conference dates, submission deadlines,
-                  fees, location, mode, tags, and official links into one
-                  searchable table. It covers future European events and a short
-                  recent archive so active opportunities stay easy to compare.
+                  fees, location, participation type, tags, and official links
+                  into one searchable table. It covers future European events
+                  and a short recent archive so active opportunities stay easy
+                  to compare.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -61,7 +62,7 @@ export default function Home() {
         <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:px-8">
           <InfoPanel
             title="Built for comparison"
-            body="Records are shown as a dense table with deadline, event date, fee, mode, source, and tag columns so researchers can scan opportunities quickly."
+            body="Records are shown as a dense table with deadline, event date, fee, participation type, source, and tag columns so researchers can scan opportunities quickly."
           />
           <InfoPanel
             title="Searchable by topic"
@@ -69,7 +70,7 @@ export default function Home() {
           />
           <InfoPanel
             title="Source-first"
-            body="Each record includes an official website or organizer link. When details are incomplete or lower-confidence, the table labels that status directly."
+            body="Each record includes an official website or organizer link. When details are incomplete, the missing values stay explicit instead of being guessed."
           />
         </section>
       </main>

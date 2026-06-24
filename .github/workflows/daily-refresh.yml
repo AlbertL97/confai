@@ -1,4 +1,4 @@
-name: Daily Conference Refresh
+name: Daily Conference Search
 
 on:
   schedule:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: daily-conference-refresh
+  group: daily-conference-search
   cancel-in-progress: false
 
 jobs:
@@ -35,7 +35,15 @@ jobs:
         if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: npm ci
 
-      - name: Run refresh dry run
+      - name: Search official conference sources
+        if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          SEARCH_MODE: dry-run
+          SEARCH_BATCH_SIZE: 10
+          SEARCH_INCLUDE_CANDIDATES: false
+        run: npm run search:dry-run
+
+      - name: Validate refresh batch
         if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         env:
           REFRESH_MODE: dry-run
@@ -46,5 +54,7 @@ jobs:
         if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v5
         with:
-          name: refresh-summary
-          path: artifacts/last-refresh-summary.json
+          name: conference-search-and-refresh-summary
+          path: |
+            artifacts/conference-search-summary.json
+            artifacts/last-refresh-summary.json

@@ -9,6 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "search:dry-run": "node scripts/search-conferences.mjs --mode=dry-run",
+    "search:offline": "node scripts/search-conferences.mjs --mode=dry-run --offline=true",
     "refresh:dry-run": "node scripts/refresh-conferences.mjs --mode=dry-run",
     "db:validate": "prisma validate"
   },

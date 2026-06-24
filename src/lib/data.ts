@@ -63,10 +63,6 @@ export function getCountryOptions() {
   return uniqueSorted(conferences.map((conference) => conference.country));
 }
 
-export function getModeOptions() {
-  return uniqueSorted(conferences.map((conference) => conference.mode));
-}
-
 export function getDeadlineItems() {
   return getUpcomingOrRecentConferences()
     .flatMap((conference) => [
@@ -118,7 +114,10 @@ export function filterConferences(params: {
       (!params.field || conference.field_tags.includes(params.field)) &&
       (!tag || tags.some((value) => normalizeTagQuery(value).includes(tag))) &&
       (!params.country || conference.country === params.country) &&
-      (!params.mode || conference.mode === params.mode) &&
+      (!params.mode ||
+        (params.mode === "onsite"
+          ? conference.mode === "in_person" || conference.mode === "unknown"
+          : conference.mode === params.mode)) &&
       (!params.fee || conference.fees.length > 0)
     );
   });
@@ -168,10 +167,6 @@ export function formatDate(date: string | null) {
     month: "short",
     year: "numeric",
   }).format(new Date(`${date}T00:00:00Z`));
-}
-
-export function formatMode(mode: Conference["mode"]) {
-  return mode.replaceAll("_", " ");
 }
 
 export function formatTag(tag: string) {

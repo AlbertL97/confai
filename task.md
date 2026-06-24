@@ -41,7 +41,7 @@ For each conference, collect and display:
 - currency;
 - main themes/tracks/topics;
 - organizer or society;
-- event mode: in-person, hybrid, online, or unknown;
+- participation type: on-site, hybrid, or online;
 - source URL(s);
 - last checked timestamp;
 - confidence/review status.
@@ -54,9 +54,9 @@ The MVP should include:
 
 1. A public homepage explaining the repository.
 2. A searchable conference records table.
-3. Filters for field, country, deadline, fee availability, event mode, and topic tags.
+3. Filters for field, country, deadline, fee availability, participation type, and topic tags.
 4. Sort options by shortest deadline, closest conference date, name, and last updated date.
-5. Deadline, source/provenance, fee, tag, mode, and confidence columns in the records table.
+5. Deadline, source/provenance, fee, tag, participation type, and updated-at columns in the records table.
 6. Clear labels for uncertain, incomplete, or manually reviewed data.
 7. Responsive UI for desktop and mobile.
 8. Basic SEO metadata.
@@ -201,6 +201,7 @@ Before implementation, Codex must ask the user:
 - [x] Implement daily refresh workflow skeleton.
 - [x] Confirm schedule and timezone behavior.
 - [x] Configure refresh batch size to 10 records per run by default.
+- [x] Add a scheduled conference search step that checks 10 official source URLs per run.
 - [ ] Add real fetch retries, logs, and database audit trail.
 - [x] Add dry-run mode.
 - [ ] Validate idempotent database writes after Neon setup.
