@@ -18,7 +18,7 @@ jobs:
       - name: Check Warsaw local time
         id: warsaw-time
         run: |
-          node -e "const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()).reduce((a,p)=>(a[p.type]=p.value,a),{}); const ok=parts.hour==='10'; console.log(`local=${parts.hour}:${parts.minute}`); console.log(`should_run=${ok}`); require('fs').appendFileSync(process.env.GITHUB_OUTPUT,`should_run=${ok}\nlocal=${parts.hour}:${parts.minute}\n`)"
+          node -e 'const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Warsaw",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date()).reduce((a,p)=>(a[p.type]=p.value,a),{}); const ok=parts.hour==="10"; const local=parts.hour+":"+parts.minute; console.log("local="+local); console.log("should_run="+ok); require("fs").appendFileSync(process.env.GITHUB_OUTPUT,"should_run="+ok+"\nlocal="+local+"\n")'
 
       - name: Checkout
         if: steps.warsaw-time.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
